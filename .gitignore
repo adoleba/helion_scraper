@@ -278,3 +278,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+#scrapy results
+.csv

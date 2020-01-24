@@ -22,9 +22,9 @@ class BookItemScraperSpider(scrapy.Spider):
             book_items["title"] = title
             book_items['author'] = author
             if price is not None:
-                book_items['price'] = price
+                book_items['price'] = price.strip(' zł').replace('.', ',')
             elif special_price is not None:
-                book_items['price'] = special_price
+                book_items['price'] = special_price.strip(' zł').replace('.', ',')
             else:
                 book_items['price'] = 'produkt chwilowo niedostępny'
 
