@@ -6,7 +6,7 @@ from helion_scraper.items import BookScrapyItem
 class BookItemScraperSpider(scrapy.Spider):
     name = 'book_item'
     allowed_domains = ['helion.pl']
-    start_urls = ['https://helion.pl/kategorie/programowanie/5']
+    start_urls = ['https://helion.pl/kategorie/programowanie']
 
     def parse(self, response):
 
@@ -42,3 +42,10 @@ class BookItemScraperSpider(scrapy.Spider):
                 book_items['price_category'] = 'produkt chwilowo niedostępny'
 
             yield book_items
+
+        next_page = response.css('div.stronicowanie > a:last-child::text').extract()
+        next_page_url = response.css('div.stronicowanie > a:last-child::attr(href)').get()
+
+        if '>' in next_page:
+            next_page_url = response.urljoin(next_page_url)
+            yield scrapy.Request(next_page_url, callback=self.parse)
