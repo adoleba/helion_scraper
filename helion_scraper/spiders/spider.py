@@ -16,10 +16,16 @@ class BookItemScraperSpider(scrapy.Spider):
             title = book.css('div.book-info > div.book-info-middle > h3 > a::text').extract_first()
             author = book.css('div.book-info > div.book-info-middle > p > a::text').extract_first()
             price = book.css('p.price-add > a > span::text').extract_first()
+            special_price = book.css('p.price > a > ins > span::text').extract_first()
 
             book_items = BookScrapyItem()
             book_items["title"] = title
             book_items['author'] = author
-            book_items['price'] = price
+            if price is not None:
+                book_items['price'] = price
+            elif special_price is not None:
+                book_items['price'] = special_price
+            else:
+                book_items['price'] = 'produkt chwilowo niedostępny'
 
             yield book_items
