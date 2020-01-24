@@ -280,4 +280,4 @@ $RECYCLE.BIN/
 *.lnk
 
 #scrapy results
-.csv
+*.csv
