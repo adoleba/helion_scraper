@@ -1,4 +1,5 @@
 import scrapy
+from scrapy.crawler import CrawlerProcess
 
 from helion_scraper.items import BookScrapyItem
 
@@ -49,3 +50,12 @@ class BookItemScraperSpider(scrapy.Spider):
         if '>' in next_page:
             next_page_url = response.urljoin(next_page_url)
             yield scrapy.Request(next_page_url, callback=self.parse)
+
+
+if __name__ == "__main__":
+    process = CrawlerProcess(settings={
+        'FEED_URI': 'spider.csv',
+        'FEED_FORMAT': 'csv'
+    })
+    process.crawl(BookItemScraperSpider)
+    process.start()
